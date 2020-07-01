@@ -158,3 +158,15 @@ Frame이 필요한 값은 FrameStatus의 enum 값 보다는 symbol이 필요해 
 * [x] [fix#16][Question.java] DeleteHistories delete(User user) 테스트 추가
 * [x] [fix#17][Question.java] delete() 메소드가 deleted의 상태 값을 변경하는 역할을 하고 있어 setDeleted()를 public 으로 선언할 필요 없음
 * [x] [fix#18][Question.java] Answer들을 꺼내서 확인하기 보다는 Answer에게 User를 넘겨주고 Answer로 하여금 작성자가 일치하는지 판단하도록 수정
+
+### Step2 추가 리뷰 사항
+* [ ] [fix#01][BowlingGame.java] Frame의 묶음 역할을 하는 객체 만들기
+* [ ] [fix#02][BowlingGame.java] View에 의존하고 있는 부분 제거
+* [ ] [fix#03][BowlingGame.java] hasLastChance 메소드 개선
+* [ ] [fix#04][Score.java] meetMaxScore 중복 제거
+* [ ] [fix#05][AnswerTest.java] static 변수 제거
+* [ ] [fix#06][QuestionTest.java] static 변수 제거
+* [ ] [fix#07][BowlingGame.java] 테스트 추가
+
+
+
