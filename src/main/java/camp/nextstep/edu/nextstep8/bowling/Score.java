@@ -2,32 +2,29 @@ package camp.nextstep.edu.nextstep8.bowling;
 
 public class Score {
     private static final int MAX_SCORE = 10;
+    private static final int INIT_SCORE = -1;
 
-    private final int score;
+    private int first;
+    private int second;
 
-    public Score(int score) {
-        validateRange(score);
-        this.score = score;
+    public Score() {
+        first = INIT_SCORE;
+        second = INIT_SCORE;
     }
 
-    public int getScore() {
-        return this.score;
+    public FrameStatus record(int downPins) {
+        validateRange(downPins);
+
+        if(INIT_SCORE == first) {
+            first = downPins;
+        }
+
+        second = downPins;
+        return new FrameStatus();
     }
 
-    public boolean meetMaxScore() {
-        return MAX_SCORE == score;
-    }
-
-    public boolean meetMaxScore(int spare) {
-        return MAX_SCORE == (score + spare);
-    }
-
-    public boolean exceedMaxScore(int spare) {
-        return MAX_SCORE < (this.score + spare);
-    }
-
-    private void validateRange(int score) {
-        if(MAX_SCORE < score) {
+    private void validateRange(int downPins) {
+        if(MAX_SCORE < downPins) {
             throw new IllegalArgumentException(MAX_SCORE + "점 을 넘을 수 없습니다");
         }
     }

@@ -4,7 +4,7 @@ import java.util.Scanner;
 
 public class BowlingGameInput {
     private static final Scanner SCANNER = new Scanner(System.in);
-    public static String getPlayer() {
+    public static String getPlayerName() {
         System.out.println("참여할 플레이어를 입력하세요 (최대 3글자, 알파뱃)");
         if(SCANNER.hasNextLine()) {
             return SCANNER.next().trim();
@@ -12,7 +12,7 @@ public class BowlingGameInput {
         throw new IllegalArgumentException("입력된 값이 없습니다");
     }
 
-    public static int getHitCount(int frame) {
+    public static int rollUp(int frame) {
         System.out.print(frame + " 프레임 투구 : ");
         if(SCANNER.hasNextInt()) {
             return SCANNER.nextInt();

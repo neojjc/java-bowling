@@ -6,37 +6,68 @@ import java.util.Map;
 public class BowlingGame {
     private static final int LAST_FRAME = 11;
 
-    private int frameIndex = 1;
+    private final Player player;
+    private int currentFrame = 1;
+
     private final Map<Integer, Frame> frames = new HashMap<>();
 
-    public void roll() {
-        markScore(BowlingGameInput.getHitCount(frameIndex));
-        if(hasSpareChance()) {
-            markSpare(BowlingGameInput.getHitCount(frameIndex));
+    public void record(int downPins) {
+        startFrame(downPins);
+
+        frames.put(currentFrame, new Frame(downPins));
+
+
+        if(10 == downPins) {
+            currentFrame++;
         }
-        frameIndex++;
+
+        frames.get(currentFrame)
+                .updateSpare(downPins);
+
+        if(meetEndCondition()){
+            endFrame();
+        }
+    }
+
+
+
+    public BowlingGame start(Player player) {
+        this.player = player;
+
+    }
+
+    public void roll() {
+        markScore(BowlingGameInput.getHitCount(currentFrame));
+        if(hasSpareChance()) {
+            markSpare(BowlingGameInput.getHitCount(currentFrame));
+        }
+        currentFrame++;
+    }
+
+    public int getCurrentFrame() {
+        return currentFrame;
     }
 
     private void markScore(int score) {
-        frames.put(frameIndex, new Frame(score));
+        frames.put(currentFrame, new Frame(score));
     }
 
     private void markSpare(int spare) {
-        frames.get(frameIndex)
+        frames.get(currentFrame)
                 .updateSpare(spare);
     }
 
     private boolean hasSpareChance() {
-        return frames.get(frameIndex).hasSpareChance();
+        return frames.get(currentFrame).hasSpareChance();
     }
 
     public boolean hasNextFrame() {
-        return LAST_FRAME > this.frameIndex;
+        return LAST_FRAME > this.currentFrame;
     }
 
     public boolean hasLastChance() {
-        int lastFrameIndex = frameIndex - 1;
-        return LAST_FRAME == this.frameIndex &&
+        int lastFrameIndex = currentFrame - 1;
+        return LAST_FRAME == this.currentFrame &&
                 frames.get(lastFrameIndex)
                         .isStrikeOrSpare();
     }
