@@ -1,5 +1,7 @@
 package camp.nextstep.edu.nextstep8.bowling;
 
-public class FrameStatus {
+public interface FrameStatus {
+    boolean isAcceptable(FrameStatusType type);
+    String getSymbol();
 
 }
