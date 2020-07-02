@@ -14,13 +14,31 @@ public class Score {
 
     public FrameStatus record(int downPins) {
         validateRange(downPins);
+        validateMaxScore(downPins);
 
         if(INIT_SCORE == first) {
             first = downPins;
         }
 
         second = downPins;
-        return new FrameStatus();
+
+        return makeStatus();
+    }
+
+    private FrameStatus makeStatus() {
+        if (MAX_SCORE == first) {
+            return new Strike();
+        }
+
+        if (MAX_SCORE == (first + second)) {
+            return new Spare(first);
+        }
+
+        if (0 == (first + second)) {
+            return new Gutter()
+        }
+
+        return new Miss(first, second);
     }
 
     private void validateRange(int downPins) {
