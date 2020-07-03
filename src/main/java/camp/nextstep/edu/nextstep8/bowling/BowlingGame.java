@@ -1,78 +1,42 @@
 package camp.nextstep.edu.nextstep8.bowling;
 
-import java.util.HashMap;
-import java.util.Map;
-
 public class BowlingGame {
-    private static final int LAST_FRAME = 11;
-
+    private final Frames frames;
     private final Player player;
-    private int currentFrame = 1;
+    private int currentFrame = 0;
 
-    private final Map<Integer, Frame> frames = new HashMap<>();
+    private BowlingGame(Player player) {
+        this.player = player;
+        this.frames = Frames.ready();
+    }
+
+    public static BowlingGame start(Player player) {
+        return new BowlingGame(player);
+    }
 
     public void record(int downPins) {
-        startFrame(downPins);
-
-        frames.put(currentFrame, new Frame(downPins));
-
-
-        if(10 == downPins) {
-            currentFrame++;
+        if(frames.hasTry(currentFrame)) {
+            frames.mark(currentFrame, downPins);
         }
-
-        frames.get(currentFrame)
-                .updateSpare(downPins);
-
-        if(meetEndCondition()){
-            endFrame();
-        }
-    }
-
-
-
-    public BowlingGame start(Player player) {
-        this.player = player;
-
-    }
-
-    public void roll() {
-        markScore(BowlingGameInput.getHitCount(currentFrame));
-        if(hasSpareChance()) {
-            markSpare(BowlingGameInput.getHitCount(currentFrame));
-        }
-        currentFrame++;
+        nextFrame();
     }
 
     public int getCurrentFrame() {
         return currentFrame;
     }
 
-    private void markScore(int score) {
-        frames.put(currentFrame, new Frame(score));
+    public boolean next() {
+        return !(frames.finalFrameIsDone());
     }
 
-    private void markSpare(int spare) {
-        frames.get(currentFrame)
-                .updateSpare(spare);
+    public String getAllFrameScore() {
+        return frames.generateAllFrameSymbols();
     }
 
-    private boolean hasSpareChance() {
-        return frames.get(currentFrame).hasSpareChance();
-    }
-
-    public boolean hasNextFrame() {
-        return LAST_FRAME > this.currentFrame;
-    }
-
-    public boolean hasLastChance() {
-        int lastFrameIndex = currentFrame - 1;
-        return LAST_FRAME == this.currentFrame &&
-                frames.get(lastFrameIndex)
-                        .isStrikeOrSpare();
-    }
-
-    public ScoreBoard getScoreBoard() {
-        return new ScoreBoard(frames);
+    private void nextFrame() {
+        if(frames.hasTry(currentFrame)) {
+            return;
+        }
+        currentFrame++;
     }
 }

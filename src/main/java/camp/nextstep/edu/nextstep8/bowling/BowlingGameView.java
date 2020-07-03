@@ -6,12 +6,14 @@ public class BowlingGameView {
     private static final String PIPE = "|";
     private static final int MAX_LOOP_COUNT = 10;
 
+    /*
     public static void showDashboard(String player, ScoreBoard scoreBoard) {
         int loopTimes = getLoopTimes(scoreBoard.getFrameCount());
         makeResult(index -> String.format("%02d", index), HEADER_NAME, loopTimes);
         makeResult(index -> scoreBoard.getFrameResult(index), player, loopTimes);
         System.out.println();
     }
+     */
 
     private static int getLoopTimes(int frameCount) {
         return frameCount > MAX_LOOP_COUNT ?
@@ -27,6 +29,12 @@ public class BowlingGameView {
         }
         output.append(PIPE);
         System.out.println(output.toString());
+    }
+
+    public static void printScoreBoard(BowlingGame bowlingGame) {
+        int loopTimes = getLoopTimes(bowlingGame.getCurrentFrame());
+        makeResult(index -> String.format("%02d", index), HEADER_NAME, loopTimes);
+
     }
 
     private static String wrapFormat(String value) {

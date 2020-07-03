@@ -13,16 +13,24 @@ public class Score {
     }
 
     public FrameStatus record(int downPins) {
-        validateRange(downPins);
-        validateMaxScore(downPins);
-
-        if(INIT_SCORE == first) {
-            first = downPins;
-        }
-
-        second = downPins;
+        checkRange(downPins);
+        checkMaxScore(downPins);
+        setScore(downPins);
 
         return makeStatus();
+    }
+
+    public boolean isMaxScore() {
+        return first == MAX_SCORE ||
+                (first + second) == MAX_SCORE;
+    }
+
+    private void setScore(int downPins) {
+        if(INIT_SCORE == first) {
+            first = downPins;
+            return;
+        }
+        second = downPins;
     }
 
     private FrameStatus makeStatus() {
@@ -35,14 +43,20 @@ public class Score {
         }
 
         if (0 == (first + second)) {
-            return new Gutter()
+            return new Gutter();
         }
 
         return new Miss(first, second);
     }
 
-    private void validateRange(int downPins) {
-        if(MAX_SCORE < downPins) {
+    private void checkRange(int downPins) {
+        if(MAX_SCORE < downPins || 0 > downPins) {
+            throw new IllegalArgumentException("0 에서 " + MAX_SCORE + " 사이 값만 가능합니다");
+        }
+    }
+
+    private void checkMaxScore(int downPins) {
+        if(MAX_SCORE < first + downPins) {
             throw new IllegalArgumentException(MAX_SCORE + "점 을 넘을 수 없습니다");
         }
     }

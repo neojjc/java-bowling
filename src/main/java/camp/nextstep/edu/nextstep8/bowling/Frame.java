@@ -1,23 +1,31 @@
 package camp.nextstep.edu.nextstep8.bowling;
 
 public class Frame {
+    private final static int MAX_TRY_CHANCE = 2;
+
     private final Score score;
     private FrameStatus status;
     private int trying;
 
     public Frame() {
         this.score = new Score();
+        this.status = new Ready();
     }
 
     public void markDownPins(int downPins) {
-        // status 를 결정
-        // addTrying
-        status = score.record(downPins); // MISS, SPARE, STRIKE, GUTTER
-        // status 는 출력 내용을 결정 한다
+        trying++;
+        status = score.record(downPins);
     }
 
-    // frame status를 가진다
-    // frame의 print symbol을 요청하면 status.getSymbol()을 반환한다
-    //
+    public String getFrameSymbol() {
+        return status.getSymbol();
+    }
 
+    public boolean isDone() {
+        return !(hasTryChance()) || score.isMaxScore();
+    }
+
+    private boolean hasTryChance() {
+        return (MAX_TRY_CHANCE > trying);
+    }
 }
